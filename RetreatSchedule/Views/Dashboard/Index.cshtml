@@ -1,0 +1,171 @@
+﻿@model RetreatSchedule.ViewModel.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link href="~/assets/plugins/bootstrap_calendar/bootstrap_calendar.css" rel="stylesheet" />
+<link href="~/assets/plugins/nvd3/build/nv.d3.css" rel="stylesheet" />
+
+
+<div id="content" class="content">
+
+    <ol class="breadcrumb pull-right">
+        <li class="breadcrumb-item"><a>Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+    </ol>
+
+    <h1 class="page-header">Dashboard <small> application overview </small></h1>
+
+    <div class="row">
+
+        <div class="col-lg-3 col-md-6">
+            <div class="widget widget-stats bg-blue">
+                <div class="stats-icon stats-icon-lg"><i class="fa fa-globe fa-fw"></i></div>
+                <div class="stats-content">
+                    <div class="stats-title">Total Visits</div>
+                    <div class="stats-number">@string.Format("{0:#,##0}", Model.TotalVisits)</div>
+                    <div class="stats-progress progress">
+                        <div class="progress-bar" style="width: 70.1%;"></div>
+                    </div>
+                    <div class="stats-desc">Better than last week (70.1%)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="widget widget-stats bg-purple">
+                <div class="stats-icon stats-icon-lg"><i class="fas fa-clipboard-list fa-fw"></i></div>
+                <div class="stats-content">
+                    <div class="stats-title">No of Bookings</div>
+                    <div class="stats-number">@string.Format("{0:#,##0}", Model.TotalBookings)</div>
+                    <div class="stats-progress progress">
+                        <div class="progress-bar" style="width: 40.5%;"></div>
+                    </div>
+                    <div class="stats-desc">Better than last week (40.5%)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="widget widget-stats bg-green">
+                <div class="stats-icon stats-icon-lg"><i class="fas fa-credit-card fa-fw"></i></div>
+                <div class="stats-content">
+                    <div class="stats-title">Online Payments</div>
+                    <div class="stats-number">@string.Format("{0:#,##0}", Model.OnlinePayments)</div>
+                    <div class="stats-progress progress">
+                        <div class="progress-bar" style="width: 76.3%;"></div>
+                    </div>
+                    <div class="stats-desc">Better than last week (76.3%)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="widget widget-stats bg-grey-darker">
+                <div class="stats-icon stats-icon-lg"><i class="fas fa-money-bill-alt fa-fw"></i></div>
+                <div class="stats-content">
+                    <div class="stats-title">Cash Payments</div>
+                    <div class="stats-number">@string.Format("{0:#,##0}", Model.CashPayments)</div>
+                    <div class="stats-progress progress">
+                        <div class="progress-bar" style="width: 54.9%;"></div>
+                    </div>
+                    <div class="stats-desc">Better than last week (54.9%)</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="widget-chart with-sidebar">
+                <div class="widget-chart-content bg-black-transparent-5">
+                    <h4 class="chart-title">
+                        Payment Analytics
+                        <small>Where do our payments come from</small>
+                    </h4>
+                    <div id="payment-line-chart" class="widget-chart-full-width nvd3-inverse-mode" style="height: 260px;"></div>
+                </div>
+                <div class="widget-chart-sidebar">
+                    <div class="chart-number">
+                        @string.Format("{0:#,##0}", Model.TotalBookings)
+                        <small>Total payments</small>
+                    </div>
+                    <div id="payment-donut-chart" class="nvd3-inverse-mode p-t-10" style="height: 180px"></div>
+                    <ul class="chart-legend f-s-11">
+                        <li><i class="fa fa-circle fa-fw text-primary f-s-9 m-r-5 t-minus-1"></i> 
+                            @(Model.TotalBookings == 0 ? 0 : ((Model.OnlinePayments *100) / Model.TotalBookings))% <span>Online Payments</span>
+                        </li>
+                        <li><i class="fa fa-circle fa-fw text-aqua f-s-9 m-r-5 t-minus-1"></i>
+                            @(Model.TotalBookings == 0 ? 0 : ((Model.CashPayments * 100) / Model.TotalBookings))% <span>Cash Payments</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="panel panel-inverse" data-sortable-id="index-3">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Retreat Calendar</h4>
+                </div>
+                <div id="schedule-calendar" class="bootstrap-calendar"></div>
+                <div class="list-group">
+                    @*<a href="javascript:;" class="list-group-item d-flex justify-content-between align-items-center text-ellipsis">
+                        Next Activity
+                        <span class="badge f-w-500 bg-blue f-s-10">9:00 am</span>
+                    </a>
+                    <a href="javascript:;" class="list-group-item d-flex justify-content-between align-items-center text-ellipsis">
+                        Have a meeting with sales team
+                        <span class="badge f-w-500 bg-grey f-s-10">2:45 pm</span>
+                    </a>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="widget-chart with-sidebar">
+                <div class="widget-chart-content bg-black-transparent-5" style="margin-right: 0px;">
+                    <h4 class="chart-title">
+                        Visitors Analytics
+                        <small>Where do our visitors come from</small>
+                    </h4>
+                    <div id="visitors-line-chart" class="widget-chart-full-width nvd3-inverse-mode" style="height: 260px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+
+    @section Scripts {
+        <script src="~/assets/plugins/d3/d3.min.js"></script>
+        <script src="~/assets/plugins/nvd3/build/nv.d3.js"></script>
+        <script src="~/assets/plugins/bootstrap_calendar/js/bootstrap_calendar.min.js"></script>
+        <script src="~/assets/js/demo/dashboard-v2.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                COLOR_GREEN = '#00cbff';
+                $.ajax({
+                    url: "/Dashboard/ChartData",
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (resp) {
+                        console.log(resp.visitorChartDatas);
+                        DashboardV2.init(resp);
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            });
+        </script>
+    }

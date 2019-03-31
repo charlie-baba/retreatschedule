@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] | Retreat Registration</title>
+
+    <environment include="Development">
+        <!-- ================== BEGIN BASE CSS STYLE ================== -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+              integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+        <link href="~/assets/plugins/bootstrap/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+        <link href="~/assets/plugins/animate/animate.min.css" rel="stylesheet" />
+        <link href="~/assets/css/default/style.min.css" rel="stylesheet" />
+        <link href="~/assets/css/default/style-responsive.min.css" rel="stylesheet" />
+        <link href="~/assets/css/theme/default.css" id="theme" rel="stylesheet" />
+
+        <link rel="shortcut icon" type="image/png" href="~/assets/favicon.png" />
+        <!-- ================== END BASE CSS STYLE ================== -->
+        <!-- ================== BEGIN BASE JS ================== -->
+        <script src="~/assets/plugins/pace/pace.min.js"></script>
+        <!-- ================== END BASE JS ================== -->
+
+    </environment>
+    <environment exclude="Development">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+              integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+        <link href="~/assets/plugins/bootstrap/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+        <link href="~/assets/plugins/animate/animate.min.css" rel="stylesheet" />
+        <link href="~/assets/css/default/style.min.css" rel="stylesheet" />
+        <link href="~/assets/css/default/style-responsive.min.css" rel="stylesheet" />
+        <link href="~/assets/css/theme/default.css" id="theme" rel="stylesheet" />
+
+        <link rel="shortcut icon" type="image/png" href="~/assets/favicon.png" />
+        
+        <script src="~/assets/plugins/pace/pace.min.js"></script>
+    </environment>
+</head>
+<body class="pace-top">
+
+    @*<partial name="_CookieConsentPartial" />*@
+
+    @RenderBody()
+
+
+    <environment include="Development">
+        <!-- ================== BEGIN BASE JS ================== -->
+        <script src="~/assets/plugins/jquery/jquery-3.3.1.min.js"></script>
+        <script src="~/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+        <script src="~/assets/plugins/bootstrap/bootstrap.bundle.min.js"></script>
+        <!--[if lt IE 9]>
+            <script src="~/assets/crossbrowserjs/html5shiv.js"></script>
+            <script src="~/assets/crossbrowserjs/respond.min.js"></script>
+            <script src="~/assets/crossbrowserjs/excanvas.min.js"></script>
+        <![endif]-->
+        <script src="~/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+        <script src="~/assets/plugins/js-cookie/js.cookie.js"></script>
+        <script src="~/assets/js/theme/default.min.js"></script>
+        <script src="~/assets/js/apps.min.js"></script>
+        <!-- ================== END BASE JS ================== -->
+
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/assets/plugins/jquery/jquery-3.3.1.min.js"></script>
+        <script src="~/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+        <script src="~/assets/plugins/bootstrap/bootstrap.bundle.min.js"></script>
+        <!--[if lt IE 9]>
+            <script src="~/assets/crossbrowserjs/html5shiv.js"></script>
+            <script src="~/assets/crossbrowserjs/respond.min.js"></script>
+            <script src="~/assets/crossbrowserjs/excanvas.min.js"></script>
+        <![endif]-->
+        <script src="~/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+        <script src="~/assets/plugins/js-cookie/js.cookie.js"></script>
+        <script src="~/assets/js/theme/default.min.js"></script>
+        <script src="~/assets/js/apps.min.js"></script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    <script>
+        $(document).ready(function () {
+            App.init();
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

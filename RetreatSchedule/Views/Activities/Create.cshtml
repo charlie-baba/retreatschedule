@@ -1,0 +1,154 @@
+﻿@model RetreatSchedule.Models.Activity
+
+@{
+    ViewData["Title"] = "Create Activity";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<link href="~/assets/css/switch.css" rel="stylesheet" />
+
+<div id="content" class="content">
+
+    <ol class="breadcrumb pull-right">
+        <li class="breadcrumb-item"><a>Home</a></li>
+        <li class="breadcrumb-item"><a asp-action="Index">Activities</a></li>
+    </ol>
+
+    <h1 class="page-header">Create Activity <small>  </small></h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-6 offset-md-2">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group mb-3">
+                    <label asp-for="Title" class="col-form-label col-md-3"></label>
+                    <div class="col-md-9 pull-right">
+                        <input asp-for="Title" class="form-control " />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group mb-3">
+                    <label asp-for="Description" class="col-form-label col-md-3"></label>
+                    <div class="col-md-9 pull-right">
+                        <textarea asp-for="Description" class="form-control "></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group mb-3 pt-3">
+                    <label asp-for="PictureUrl" class="col-form-label col-md-3"></label>
+                    <div class="col-md-9 pull-right">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <input asp-for="PictureUrl" class="form-control" readonly />
+                            </div>
+                            <div class="col-md-3">
+                                <button id="selectImg" type="button" class="btn btn-success"> Select Image </button>
+                            </div>
+                        </div>
+                        <span asp-validation-for="PictureUrl" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group mb-3">
+                    <label asp-for="Capacity" class="col-form-label col-md-3"></label>
+                    <div class="col-md-9 pull-right">
+                        <input asp-for="Capacity" class="form-control " />
+                        <span asp-validation-for="Capacity" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group mb-3">
+                    <label asp-for="StartDate" class="col-form-label col-md-3"></label>
+                    <div class="col-md-9 pull-right">
+                        <input asp-for="StartDate" class="form-control" type="date" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group mb-3">
+                    <label asp-for="EndDate" class="col-form-label col-md-3"></label>
+                    <div class="col-md-9 pull-right">
+                        <input asp-for="EndDate" class="form-control" type="date" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group mb-3">
+                    <label asp-for="Amount" class="col-form-label col-md-3"></label>
+                    <div class="col-md-9 pull-right">
+                        <input asp-for="Amount" class="form-control " />
+                        <span asp-validation-for="Amount" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group mb-3">
+                    <label asp-for="HouseKeepingInfo" class="col-form-label col-md-3"></label>
+                    <div class="col-md-9 pull-right">
+                        <textarea asp-for="HouseKeepingInfo" class="form-control "></textarea>
+                        <span asp-validation-for="HouseKeepingInfo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group mb-3 pt-3">
+                    <label asp-for="IsActive" class="col-form-label col-md-3"></label>
+                    <div class="col-md-9 pull-right">
+                        <label class="switch">
+                            <input asp-for="IsActive" />
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group mb-3">
+                    <label asp-for="LocationID" class="col-form-label col-md-3"></label>
+                    <div class="col-md-9 pull-right">
+                        <select asp-for="LocationID" class="form-control " asp-items="ViewBag.LocationID"></select>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group mb-3">
+                    <label asp-for="ActivityTypeID" class="col-form-label col-md-3"></label>
+                    <div class="col-md-9 pull-right">
+                        <select asp-for="ActivityTypeID" class="form-control " asp-items="ViewBag.ActivityTypeID"></select>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group mt-3 col-md-12">
+                    <div class="pull-right">
+                        <a class="btn btn-default" asp-action="Index">Back to list</a>
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<form method="post" enctype="multipart/form-data" asp-controller="UploadFiles" asp-action="Index" class="d-none" id="uploadForm">
+    <input type="hidden" name="Type" value="activities" />
+    <div class="form-group">
+        <div class="col-md-10">
+            <p>Upload one or more files using this form:</p>
+            <input type="file" id="uploadFile" name="File" accept=".jpg, .jpeg, .png, .gif" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" class="btn" value="Upload" />
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/assets/js/custom.js"></script>
+
+    <script>
+        $('#selectImg').click(function () {
+            $('#uploadFile').click();
+        });
+    </script>
+}

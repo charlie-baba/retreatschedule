@@ -1,0 +1,137 @@
+﻿@model RetreatSchedule.Models.Booking
+@using RetreatSchedule.Models.Enum
+
+@{
+    ViewData["Title"] = "Edit Booking";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<link href="~/assets/css/sweet-alert.min.css" rel="stylesheet" />
+<link href="~/assets/css/switch.css" rel="stylesheet" />
+
+<div id="content" class="content">
+
+    <ol class="breadcrumb pull-right">
+        <li class="breadcrumb-item"><a>Home</a></li>
+        <li class="breadcrumb-item"><a asp-action="Index">Bookings</a></li>
+    </ol>
+
+    <h1 class="page-header"> Booking <small>  </small></h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-6 offset-md-2">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="UserID" class="control-label"></label>
+                    <input asp-for="UserID" class="form-control" type="hidden" />
+                    <input class="form-control" type="text" value="@Model.User.FirstName @Model.User.LastName" readonly />
+                    <span asp-validation-for="UserID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TransactionRef" class="control-label"></label>
+                    <input asp-for="TransactionRef" class="form-control" readonly />
+                    <span asp-validation-for="TransactionRef" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DateCreated" class="control-label"></label>
+                    <input asp-for="DateCreated" class="form-control" value="@Model.DateCreated" type="text" />
+                    <span asp-validation-for="DateCreated" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PaymentStatus" class="control-label"></label>
+                    @if (Model.PaymentType == PaymentType.Cash)
+                    {
+                        <select asp-for="PaymentStatus" class="form-control" asp-items="@Html.GetEnumSelectList<PaymentStatus>()"></select>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-md-10">
+                                <input asp-for="PaymentStatus" class="form-control" readonly />
+                            </div>
+                            <div class="col-md-2">
+                                <button id="requery" type="button" class="btn btn-success"> <i class="fas fa-redo-alt"></i> Requery</button>
+                            </div>
+                        </div>
+                    }
+                    <span asp-validation-for="PaymentStatus" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Amount" class="control-label"></label>
+                    <br />
+                    <span>Required Amount: &#8358; @string.Format("{0:#,##0}", Model.Activity.Amount) </span>
+                    @if (@Model.PaymentType == PaymentType.Cash)
+                    {
+                        <input asp-for="Amount" class="form-control" />
+                    }
+                    else
+                    {
+                        <input asp-for="Amount" class="form-control" readonly />
+                    }
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PaymentType" class="control-label"></label>
+                    <select asp-for="PaymentType" class="form-control" asp-items="@Html.GetEnumSelectList<PaymentType>()"></select>
+                    <span asp-validation-for="PaymentType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ActivityID" class="control-label"></label>
+                    <select asp-for="ActivityID" class="form-control" asp-items="ViewBag.ActivityID"></select>
+                    <span asp-validation-for="ActivityID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IsAttended" class="control-label"></label>
+                    <div class="checkbox">
+                        <label class="switch">
+                            <input type="checkbox" name="IsAttended" id="IsAttended" value="true" @(Model.IsAttended == true ? "checked" : "") />
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <a class="btn btn-default" asp-action="Index">Back to list</a>
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script>
+        $('#requery').click(function () {
+            $(this).html("<i class='fa-spin fas fa-redo-alt'></i> Requery");
+            $.ajax({
+                data: JSON.stringify({ "transactionRef": $('#TransactionRef').val() }),
+                contentType: "application/json; charset=utf-8",
+                url: '/Transaction/Verify',
+                type: "POST",
+                dataType: "json",
+                success: function (resp) {
+                    console.log(resp);
+                    if (resp != null) {
+                        if (resp.code == "00") {
+                            $('#PaymentStatus').val("Successful");
+                            swal("Successful", resp.description, "success");
+                        } else if (resp.code == "XX") {
+                            $('#PaymentStatus').val("Failed");
+                            swal("Info", resp.description, "info");
+                        }
+                    } else {
+                        swal("Error", "An error occured while processing your request. Please contact support.", "error");
+                    }
+                },
+                error: function (err) {
+                    swal("Error", "An error occured while processing your request. Please contact support.", "error");
+                }
+            });
+            $(this).html("<i class='fas fa-redo-alt'></i> Requery");
+        });
+    </script>
+}

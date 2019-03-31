@@ -1,0 +1,123 @@
+﻿@model RetreatSchedule.Models.Activity
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<link href="~/assets/css/switch.css" rel="stylesheet" />
+
+<div id="content" class="content">
+
+    <ol class="breadcrumb pull-right">
+        <li class="breadcrumb-item"><a>Home</a></li>
+        <li class="breadcrumb-item"><a asp-action="Index">Activities</a></li>
+    </ol>
+
+    <h1 class="page-header">Edit Activity <small>  </small></h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-6 offset-md-2">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PictureUrl" class="control-label"></label>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <input asp-for="PictureUrl" class="form-control" readonly />
+                        </div>
+                        <div class="col-md-2 pl-0">
+                            <button id="selectImg" type="button" class="btn btn-success"> Select Image </button>
+                        </div>
+                    </div>
+                    <span asp-validation-for="PictureUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Capacity" class="control-label"></label>
+                    <input asp-for="Capacity" class="form-control" />
+                    <span asp-validation-for="Capacity" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StartDate" class="control-label"></label>
+                    <input asp-for="StartDate" class="form-control" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EndDate" class="control-label"></label>
+                    <input asp-for="EndDate" class="form-control" />
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Amount" class="control-label"></label>
+                    <input asp-for="Amount" class="form-control" />
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HouseKeepingInfo" class="control-label"></label>
+                    <textarea asp-for="HouseKeepingInfo" class="form-control"></textarea>
+                    <span asp-validation-for="HouseKeepingInfo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IsActive" class="control-label"></label>
+                    <div class="checkbox">
+                        <label class="switch">
+                            <input asp-for="IsActive" />
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LocationID" class="control-label"></label>
+                    <select asp-for="LocationID" class="form-control" asp-items="ViewBag.LocationID"></select>
+                    <span asp-validation-for="LocationID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ActivityTypeID" class="control-label"></label>
+                    <select asp-for="ActivityTypeID" class="form-control" asp-items="ViewBag.ActivityTypeID"></select>
+                    <span asp-validation-for="ActivityTypeID" class="text-danger"></span>
+                </div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <a class="btn btn-default" asp-action="Index">Back to list</a>
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<form method="post" enctype="multipart/form-data" asp-controller="UploadFiles" asp-action="Index" class="d-none" id="uploadForm">
+    <input type="hidden" name="Type" value="activities" />
+    <div class="form-group">
+        <div class="col-md-10">
+            <p>Upload one or more files using this form:</p>
+            <input type="file" id="uploadFile" name="File" accept=".jpg, .jpeg, .png, .gif" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" class="btn" value="Upload" />
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/assets/js/custom.js"></script>
+
+    <script>
+        $('#selectImg').click(function () {
+            $('#uploadFile').click();
+        });
+    </script>
+}

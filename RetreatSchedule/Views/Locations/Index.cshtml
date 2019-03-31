@@ -1,0 +1,90 @@
+﻿@model IEnumerable<RetreatSchedule.Models.Location>
+
+@{
+    ViewData["Title"] = "Venues";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+<link href="~/assets/plugins/DataTables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="~/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
+<!-- ================== END PAGE LEVEL STYLE ================== -->
+
+
+<div id="content" class="content">
+
+    <span class="pull-right">
+        <a asp-action="Create" class="btn btn-primary"> <i class="fa fa-plus"></i> Add New Venue</a>
+    </span>
+    <h1 class="page-header"> Venues <small>  </small></h1>
+
+    <div class="panel panel-inverse">
+        <div class="panel-heading">
+            <div class="panel-heading-btn">
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
+            </div>
+            <h4 class="panel-title">Retreats and Workshops Venues</h4>
+        </div>
+
+        <div class="panel-body">
+            <table id="locations-table" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Address)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ContactPhone)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Coordinate)
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ContactPhone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Coordinate)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id">View</a> |
+                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+    <script src="~/assets/plugins/DataTables/media/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
+
+    <script>
+        if ($('#locations-table').length !== 0) {
+            $('#locations-table').DataTable();
+        }
+    </script>
+}

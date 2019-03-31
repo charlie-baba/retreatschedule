@@ -1,0 +1,63 @@
+﻿
+<div class="modal fade" id="donateModal" tabindex="-1" role="dialog" aria-labelledby="donateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <form id="donateForm" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title text-black" id="donateModalLabel"> Donation </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><b class="text-black"> You can donate up to &#8358; 20,000 </b></p>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="name" class="col-form-label f-s-12 text-md-right text-black">
+                                    Name <span class="text-danger">*</span>
+                                </label>
+                                <input id="name" name="name" class="form-control" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="email" class="col-form-label f-s-12 text-md-right text-black"> Email </label>
+                                <input id="email" name="email" type="email" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="phoneNumber" class="col-form-label f-s-12 text-md-right text-black">
+                                    Phone Number <span class="text-danger">*</span>
+                                </label>
+                                <input id="phoneNumber" name="phoneNumber" class="form-control" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="amount" class="col-form-label f-s-12 text-md-right text-black">
+                                    Amount (&#8358;) <span class="text-danger">*</span>
+                                </label>
+                                <input id="amount" name="amount" type="text" class="form-control" maxlength="5" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"> <i class="fas fa-credit-card"></i> Donate</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

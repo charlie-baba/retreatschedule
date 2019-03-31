@@ -1,0 +1,176 @@
+﻿@model RetreatSchedule.ViewModel.HomeViewModel
+@using RetreatSchedule.Util
+@using RetreatSchedule.Models.Enum
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<style>
+    #content {
+        margin: 34px 0 10px;
+    }
+    .post-left-info {
+        width: 60px !important;
+    }
+</style>
+
+<partial name="../Shared/Partials/_NavBarTransparent" />
+
+<div id="page-title" class="page-title has-bg">
+    <div class="bg-cover" data-paroller="true" data-paroller-factor="0.5" data-paroller-factor-xs="0.2"
+         style="background: url(/assets/img/cover/cover-5.jpg) center 0px / cover no-repeat"></div>
+    <div class="container">
+        <h1> Why make a retreat? </h1>
+        <p>
+            Making an annual retreat – a couple of days spent in silence, prayer,
+            and reflection – involves a sacrifice for nearly all busy people.
+            Nonetheless, every year countless busy people make the time for a
+            retreat. Retreats can truly rejuvenate our spirits and are definitely
+            a valuable investment in today’s noisy world.
+        </p>
+    </div>
+</div>
+
+<div id="content" class="content">
+    
+    <div class="container">
+        <div class="row row-space-30">
+            
+            <div class="col-md-9">
+                
+                <ul class="post-list">
+
+                    @foreach (var item in Model.Activities)
+                    {
+                        <li>
+                            <!-- begin post-left-info -->
+                            <div class="post-left-info">
+                                <div class="post-date">
+                                    <span class="day">@item.StartDate.ToString("dd")</span>
+                                    <span class="month">@item.StartDate.ToString("MMM")</span>
+                                </div>
+                                <div class="post-likes">
+                                    <i class="fas fa-clipboard-list"></i>
+                                    @{ var spacesLeft = item.Capacity - item.Bookings?.Where(x => x.PaymentStatus == PaymentStatus.Successful).Count(); }
+                                    <span class="number">@(spacesLeft <= 0 ? "no space available" : $"{spacesLeft} spaces left") </span>
+                                </div>
+                            </div>
+                            
+                            <div class="post-content">
+                                <div class="post-image" style="height: 140px; overflow: hidden;">
+                                    <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id">
+                                        <div class="post-image-cover" style="background-image: url(@item.PictureUrl)"></div>
+                                    </a>
+                                </div>
+                                
+                                <div class="post-info">
+                                    <h4 class="post-title">
+                                        <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id">@item.Title</a>
+                                    </h4>
+                                    <div class="post-by">
+                                        Venue: <strong class="text-black">@item.Location.Name</strong>
+                                        <span class="divider">|</span>
+                                        <strong class="text-black">@item.StartDate.ToString("MMMM dd") - @item.EndDate.ToString("MMMM dd")</strong>
+                                        <span class="divider">|</span>
+                                        <strong class="text-black">&#8358; @string.Format("{0:#,##0.##}", item.Amount)</strong>
+                                        <span class="divider">|</span>
+                                        <strong class="text-black">@item.Capacity spaces</strong>
+                                    </div>
+                                    <div class="post-desc">
+                                        @item.Description.Truncate(400)
+                                    </div>
+                                </div>
+                                
+                                <div class="read-btn-container">
+                                    <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="btn btn-green btn-sm">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    }
+
+                </ul>
+
+                @{
+                    var activities = Model.Activities;
+                    var prevDisabled = !activities.HasPreviousPage ? "disabled" : "";
+                    var nextDisabled = !activities.HasNextPage ? "disabled" : "";
+                }
+
+                <div class="section-container">
+                    <div class="pagination-container">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item @prevDisabled">
+                                <a class="page-link" asp-action="Index" asp-route-page="@(activities.PageIndex - 1)"
+                                   asp-route-locationName="@ViewData["LocationName"]" asp-route-activityName="@ViewData["ActivityName"]">Prev</a>
+                            </li>
+                            @for (int i = 1; i <= activities.TotalPages; i++)
+                            {
+                                <li class="page-item @(activities.PageIndex == i ? "active" : "")">
+                                    <a class="page-link" asp-action="Index" asp-route-page="@i"
+                                       asp-route-locationName="@ViewData["LocationName"]" asp-route-activityName="@ViewData["ActivityName"]">@i</a>
+                                </li>
+                            }
+                            @*<li class="page-item"><span class="text">...</span></li>
+                                <li class="page-item"><a class="page-link" href="javascript:;">17</a></li>*@
+                            <li class="page-item @nextDisabled">
+                                <a class="page-link" asp-action="Index" asp-route-page="@(activities.PageIndex + 1)"
+                                   asp-route-locationName="@ViewData["LocationName"]" asp-route-activityName="@ViewData["ActivityName"]">Next</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="section-container d-none">
+                    <div class="input-group sidebar-search">
+                        <input type="text" class="form-control" placeholder="Search..." />
+                        <span class="input-group-append">
+                            <button class="btn btn-inverse" type="button"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="section-container">
+                    <h4 class="section-title"><span>Venues</span></h4>
+                    <ul class="sidebar-list">
+                        <li><a asp-action="Index"> All Venues </a></li>
+                        @foreach (var item in Model.Locations)
+                        {
+                            <li><a asp-action="Index" asp-route-locationName="@item.Name"> @item.Name (@item.Count)</a></li>
+                        }
+                    </ul>
+                </div>
+
+                <div class="section-container">
+                    <h4 class="section-title"><span>Activities</span></h4>
+                    <ul class="sidebar-list">
+                        <li><a asp-action="Index"> All Activities </a></li>
+                        @foreach (var item in Model.ActivityTypes)
+                        {
+                            <li><a asp-action="Index" asp-route-activityName="@item.Name"> @item.Name (@item.Count)</a></li>
+                        }
+                    </ul>
+                </div>
+
+                <div class="section-container">
+                    <h4 class="section-title"><span>Follow Us</span></h4>
+                    <ul class="sidebar-social-list" style="padding-left: 30%;">
+                        <li><a href="http://www.opusdei.ng" target="_blank"><i class="fas fa-globe"></i></a></li>
+                        <li><a href="https://twitter.com/OpusdeiNg?ref_src=twsrc%5Etfw" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                        @*<li><a href="#"><i class="fab fa-google-plus"></i></a></li>
+                <li><a href="#"><i class="fab fa-instagram"></i></a></li>*@
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>

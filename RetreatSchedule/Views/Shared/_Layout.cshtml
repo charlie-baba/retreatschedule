@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] | Retreat Registration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Retreat and Workshop registration" />
+    <meta property="og:image" content="https://retreatschedule.com/assets/favicon.png">
+
+    <link rel="shortcut icon" type="image/png" href="~/assets/favicon.png" />
+
+    <environment include="Development">
+        <!-- ================== BEGIN BASE CSS STYLE ================== -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+              integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+        <link href="~/assets/plugins/bootstrap/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/assets/css/style.min.css" rel="stylesheet" />
+        <link href="~/assets/css/style-responsive.min.css" rel="stylesheet" />
+        <link href="~/assets/css/theme/indigo.css" id="theme" rel="stylesheet" />
+
+        <!-- ================== END BASE CSS STYLE ================== -->
+        <!-- ================== BEGIN BASE JS ================== -->
+        <script src="~/assets/plugins/pace/pace.min.js"></script>
+        <!-- ================== END BASE JS ================== -->
+        <link href="~/assets/css/sweet-alert.min.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+              integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+        <link href="~/assets/plugins/bootstrap/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/assets/css/style.min.css" rel="stylesheet" />
+        <link href="~/assets/css/style-responsive.min.css" rel="stylesheet" />
+        <link href="~/assets/css/theme/indigo.css" id="theme" rel="stylesheet" />
+
+        <script src="~/assets/plugins/pace/pace.min.js"></script>
+        <link href="~/assets/css/sweet-alert.min.css" rel="stylesheet" />
+    </environment>
+</head>
+<body>
+
+    @*<partial name="_CookieConsentPartial" />*@
+
+    @RenderBody()
+
+    <partial name="~/Views/Shared/Partials/_Donate.cshtml" />
+
+    <div id="footer-copyright" class="footer-copyright">
+        <div class="container">
+            <span class="copyright">&copy; @DateTime.Now.Year Retreat Schedule </span>
+            <ul class="social-media-list mt-2 mt-sm-0 float-none float-sm-right">
+                <li><a href="http://www.opusdei.ng" target="_blank"><i class="fas fa-globe"></i></a></li>
+                <li><a href="https://twitter.com/OpusdeiNg?ref_src=twsrc%5Etfw" target="_blank"><i class="fab fa-twitter"></i></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <environment include="Development">
+        <!-- ================== BEGIN BASE JS ================== -->
+        <script src="~/assets/plugins/jquery/jquery-3.3.1.min.js"></script>
+        <script src="~/assets/plugins/bootstrap/bootstrap.bundle.min.js"></script>
+        <!--[if lt IE 9]>
+        <script src="~/assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="~/assets/crossbrowserjs/respond.min.js"></script>
+        <script src="~/assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+        <script src="~/assets/plugins/js-cookie/js.cookie.js"></script>
+        <script src="~/assets/plugins/paroller/jquery.paroller.min.js"></script>
+        <script src="~/assets/js/blog/apps.min.js"></script>
+        <script src="~/assets/js/loader.js"></script>
+        <!-- ================== END BASE JS ================== -->
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/assets/plugins/jquery/jquery-3.3.1.min.js"></script>
+        <script src="~/assets/plugins/bootstrap/bootstrap.bundle.min.js"></script>
+        <!--[if lt IE 9]>
+            <script src="~/assets/crossbrowserjs/html5shiv.js"></script>
+            <script src="~/assets/crossbrowserjs/respond.min.js"></script>
+            <script src="~/assets/crossbrowserjs/excanvas.min.js"></script>
+        <![endif]-->
+        <script src="~/assets/plugins/js-cookie/js.cookie.js"></script>
+        <script src="~/assets/plugins/paroller/jquery.paroller.min.js"></script>
+        <script src="~/assets/js/blog/apps.min.js"></script>
+        <script src="~/assets/js/loader.js"></script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+   
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            App.init();
+        });
+
+        $(document).ajaxSend(function (e, xhr, options) { if (options.type.toUpperCase() == "POST") { var token = $("input[name=__RequestVerificationToken]").val(); xhr.setRequestHeader("RequestVerificationToken", token) } });
+
+        $('#donateModal').on('shown.bs.modal', function () {
+            $('#donateForm')[0].reset();
+        });
+
+        $('#donateForm').submit(function (e) {
+            e.preventDefault();
+            InitiateOnlinePayment(getDonationData(), "/Transaction/Donate");
+        });
+
+        function getDonationData() {
+            return JSON.stringify({
+                "name": $('#name').val(),
+                "email": $('#email').val(),
+                "phoneNumber": $('#phoneNumber').val(),
+                "amount": $('#amount').val()
+            });
+        }
+
+        function InitiateOnlinePayment(requestData, url) {
+            setTimeout(function () {
+                if ($('.field-validation-error').length < 1) {
+                    $("#btn-cash").prop('disabled', true);
+                    $('#btn-online').prop('disabled', true);
+
+                    $.ajax({
+                        data: requestData,
+                        contentType: "application/json; charset=utf-8",
+                        url: url,
+                        type: "POST",
+                        dataType: "json",
+                        success: function (resp) {
+                            if (resp.code == "00") {
+                                if (resp.paymentType == 1) {
+                                    payWithPaystack(resp.email, resp.amount, resp.ref)
+                                } else if (resp.paymentType == 0) {
+                                    var span = document.createElement("span");
+                                    span.innerHTML = "Your space has been reserved. However, you need to make payment and upload proof within 24 hours to avoid losing your space. Transaction ref: <b>" + resp.ref + "</b> <br/> <br/> <span>Bank Name: <b>Access Bank</b></span> <br/> <span>Account Name: <b>Wetland Booking</b></span> <br/> <span>Account Number: <b>0768518344</b></span>";
+                                    swal({
+                                        title: "Successful!",
+                                        content: span,
+                                        icon: "success",
+                                        type: "success"
+                                    }).then(function () {
+                                        window.location = "/"
+                                    })
+                                }
+                            } else {
+                                swal("Error", resp.description, "error")
+                            }
+                        },
+                        error: function (err) {
+                            swal("Error", "An error occured while processing your request. Please try again.", "error")
+                        }
+                    }).always(function (jqXHR, status) {
+                        $("#btn-cash").prop('disabled', false);
+                        $('#btn-online').prop('disabled', false);
+                    });
+                }
+            }, 150);
+        }
+              
+        function payWithPaystack(custEmail, payAmount, reference) {
+            var handler = PaystackPop.setup({
+                key: "@ViewData["PublicKey"]",
+                email: custEmail,
+                amount: payAmount,
+                ref: reference,
+                metadata: {
+                    custom_fields: [{
+                        display_name: "Mobile Number",
+                        variable_name: "mobile_number",
+                        value: "+2348065368787"
+                    }]
+                },
+                callback: function(response) {
+                    verifyTransaction(response.reference)
+                },
+                onClose: function() {
+                    $(location).attr('href', '/')
+                }
+            });
+            handler.openIframe()
+        }
+
+        function verifyTransaction(ref)
+        {
+            $.ajax({
+                data: JSON.stringify({ "transactionRef": ref }),
+                contentType: "application/json; charset=utf-8",
+                url: '/Transaction/Verify',
+                type: "POST",
+                dataType: "json",
+                success: function (resp) {
+                    if (resp != null) {
+                        if (resp.code == "00") {
+                            swal({
+                                title: "Successful!",
+                                text: resp.description,
+                                icon: "success",
+                                type: "success"
+                            }).then(function () {
+                                window.location = "/"
+                            })
+                        } else {
+                            swal("Error", resp.description, "error")
+                        }
+                    } else {
+                        swal("Error", "An error occured while processing your request. Please contact support.", "error")
+                    }
+                },
+                error: function (err) {
+                    swal("Error", "An error occured while processing your request. Please contact support.", "error")
+                }
+            });
+        }
+    </script>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

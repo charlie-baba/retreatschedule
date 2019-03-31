@@ -1,0 +1,55 @@
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Http
+@using RetreatSchedule.Util
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<div id="header" class="header navbar-default">
+
+    <div class="navbar-header">
+        <a asp-controller="Dashboard" asp-action="Index" class="navbar-brand"><span class="navbar-logo"></span> <b>Retreat</b> Registration</a>
+        <button type="button" class="navbar-toggle" data-click="sidebar-toggled">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var currentUser = Context.Session.Get<RetreatSchedule.Models.User>(Constants.SessionKeyUser);
+        <ul class="navbar-nav navbar-right">
+            <li>
+                <form class="navbar-form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Enter keyword" />
+                        <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+                    </div>
+                </form>
+            </li>
+            <li class="dropdown navbar-user">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="@(currentUser?.ProfilePicture ?? "/assets/img/avatar.png")" onerror="src='/assets/img/avatar.png'" alt="I" />
+                    <span class="d-none d-md-inline">@currentUser?.FirstName @currentUser?.LastName</span> <b class="caret"></b>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Profile" class="dropdown-item">Edit Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="javascript:;" onclick="logout();" class="dropdown-item">Log Out</a>
+                </div>
+            </li>
+        </ul>
+
+    }
+    else
+    {
+        <ul class="navbar-nav navbar-right">
+            <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+            <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+        </ul>
+    }
+</div>
+
+<form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" class="d-none">
+    <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
+</form>

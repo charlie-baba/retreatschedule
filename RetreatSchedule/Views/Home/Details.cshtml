@@ -1,0 +1,131 @@
+﻿@model RetreatSchedule.Models.Activity
+@{
+    ViewData["Title"] = "Details";
+}
+
+<partial name="../Shared/Partials/_NavBarDefault" />
+<style>
+    @@media only screen and (max-width: 480px) {
+        #container {margin-top: 3rem !important;}
+    }
+    .content { margin: 84px 0 10px !important }
+    .section-container { margin-bottom: 20px; }
+</style>
+
+<!-- begin #content -->
+<div id="content" class="content">
+    <!-- begin container -->
+    <div class="container">
+        <!-- begin row -->
+        <div class="row row-space-30">
+            <!-- begin col-9 -->
+            <div class="col-md-9">
+                <!-- begin post-detail -->
+                <div id="container" class="post-detail section-container">
+                    <div class="pull-right">
+                        @if (Model.IsActive)
+                        {
+                            <a asp-action="Payment" asp-route-id="@Model.Id" class="payBtn btn btn-sm btn-green"> Book Now </a>
+                        }
+                    </div>
+                    <h4 class="post-title">
+                        <a href="javascript:;">@Model.Title</a>
+                    </h4>
+                    <div class="post-by">
+                        Venue: <strong class="text-black">@Model.Location.Name</strong>
+                        <span class="divider">|</span>
+                        <strong class="text-black">@Model.StartDate.ToString("MMMM dd") - @Model.EndDate.ToString("MMMM dd")</strong>
+                        <span class="divider">|</span>
+                        <strong class="text-black">&#8358; @string.Format("{0:#,##0.##}", Model.Amount)</strong>
+                        <span class="divider">|</span>
+                        <strong class="text-black">@Model.Capacity seats</strong>
+                    </div>
+
+                    @if (!Model.IsActive)
+                    {
+                        <div class="mb-3">
+                            <b class="text-danger">Booking has not yet commenced for this activity</b>
+                        </div>
+                    }
+
+                    <div class="post-image">
+                        <div class="post-image-cover" style="background-image: url(@Model.PictureUrl)"></div>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Description))
+                    {
+                        <h6 class="text-center text-black"><b>Description</b></h6>
+                        <div class="post-desc">
+                            <p> @Model.Description </p>
+                        </div>
+                    }
+
+                    @if (Model.IsActive)
+                    {
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a asp-action="Payment" asp-route-id="@Model.Id" class="payBtn btn btn-green btn-lg pull-right"> Book Now </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                
+                <div class="section-container">
+                    <h4 class="section-title m-b-20"><span>Note</span></h4>
+                    <div class="alert alert-warning f-s-12 text-center">
+                        Booking cancellation cannot be allowed later than four (4) days to the activity,
+                        else a percentage of the fee would be forfeited.
+                    </div>
+                </div>
+                @if (!string.IsNullOrWhiteSpace(Model.Location.MapUrl))
+                {
+                    <div class="section-container d-none">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe id="mapFrame" class="embed-responsive-item" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3962.331900561207!2d4.005199214786416!3d6.729298595135265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103941e4e582ce63%3A0xb116ff5b910c7a1d!2sIroto+Conference+Centre!5e0!3m2!1sen!2sng!4v1545033253573" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="section-container">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" src="@Html.Raw(Model.Location.MapUrl)" allowfullscreen=""></iframe>
+                        </div>
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.HouseKeepingInfo))
+                {
+                    <div class="post-list">
+                        <blockquote style="font-size: 16px; padding: 15px">
+                            <i class="fas fa-info-circle mr-2"></i> @Model.HouseKeepingInfo
+                        </blockquote>
+                    </div>
+                }
+
+                <!-- end section-container -->
+            </div>
+
+            <div class="col-md-3">
+                <div class="row-space-30 f-s-12 text-inverse">
+
+                    <div class="section-container" style="margin-bottom: 65px;"> </div>
+                    <h4 class="section-title"><span> Address </span></h4>
+                    <p>
+                        <strong> @Model.Location.Name </strong><br>
+                        @Model.Location.Address<br>
+                        @(string.IsNullOrWhiteSpace(Model.Location.ContactPhone) ? "" : $"P: {Model.Location.ContactPhone}")<br>
+                    </p>
+                    <p>
+                        <span class="phone">@ViewData["ContactPhone"]</span><br>
+                        @{ var contactEmails = ViewData["ContactEmail"].ToString().Trim(); }
+
+                        @foreach (var contact in contactEmails.Split(", "))
+                        {
+                            <a href="mailto:@contact">@contact</a>
+                        }
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

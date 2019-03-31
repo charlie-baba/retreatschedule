@@ -1,0 +1,204 @@
+﻿@model RetreatSchedule.ViewModel.PaymentRequest
+
+@{
+    ViewData["Title"] = "Payment";
+}
+<style>
+    .page-title {
+        padding: 120px 0 40px;
+    }
+</style>
+<partial name="../Shared/Partials/_NavBarDefault" />
+
+<div id="page-title" class="page-title has-bg">
+    <div class="bg-cover" data-paroller="true" data-paroller-factor="0.5" data-paroller-factor-xs="0.2"
+         style="background: url(/assets/img/cover/cover-credit-card.jpg) center 0px / cover no-repeat"></div>
+    <div class="container">
+        <h1>Contact Details</h1>
+    </div>
+</div>
+
+<div id="content" class="content" style="min-height: 50vh;">
+    <div class="container">
+        <div class="row row-space-30">
+            <div class="col-md-12">
+
+                <div class="section-container">
+
+                    <form id="paymentForm" action="" method="POST">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="ActivityID" value="@ViewData["ActivityID"]" />
+                        <input type="hidden" asp-for="PaymentType" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Email" class="col-form-label f-s-12 text-md-right text-black">
+                                        Email <span class="text-danger">*</span>
+                                    </label>
+                                    <input asp-for="Email" class="form-control" placeholder="yourmail@email.com" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="PhoneNo" class="col-form-label f-s-12 text-md-right text-black">
+                                        Phone number <span class="text-danger">*</span>
+                                    </label>
+                                    <input asp-for="PhoneNo" class="form-control" maxlength="11" />
+                                    <span asp-validation-for="PhoneNo" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="FirstName" class="col-form-label f-s-12 text-md-right text-black">
+                                        First name <span class="text-danger">*</span>
+                                    </label>
+                                    <input asp-for="FirstName" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="LastName" class="col-form-label f-s-12 text-md-right text-black">
+                                        Last name <span class="text-danger">*</span>
+                                    </label>
+                                    <input asp-for="LastName" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="AgeRange" class="col-form-label f-s-12 text-md-right text-black">
+                                        Age Range <span class="text-danger">*</span>
+                                    </label>
+                                    <select asp-for="AgeRange" class="form-control">
+                                        <option value=""> --- </option>
+                                        <option value="50-90">50 - 90</option>
+                                        <option value="30-49">30 - 49</option>
+                                        <option value="24-29">20 - 29</option>
+                                    </select>
+                                    <span asp-validation-for="AgeRange" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="NoOfSpaces" class="col-form-label f-s-12 text-md-right text-black">
+                                        Number of spaces <span class="text-danger">*</span>
+                                    </label>
+                                    <select asp-for="NoOfSpaces" class="form-control">
+                                        @for (int i = 1; i <= 3; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="NoOfSpaces" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            @*<div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Referrer" class="col-form-label f-s-12 text-md-right text-black">
+                                        Name of Referrer <span class="text-danger">*</span>
+                                    </label>
+                                    <input asp-for="Referrer" class="form-control" />
+                                    <span asp-validation-for="Referrer" class="text-danger"></span>
+                                </div>
+                            </div>*@
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ReferringCentreID" class="col-form-label f-s-12 text-md-right text-black">
+                                        Referring Centre
+                                    </label>
+                                    <select asp-for="ReferringCentreID" class="form-control " asp-items="ViewBag.ReferringCentreID">
+                                        <option value=""> --- </option>
+                                    </select>
+                                    <span asp-validation-for="ReferringCentreID" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-indigo btn-lg" id="btn-online">
+                                        <i class="fas fa-credit-card"></i> Pay Now
+                                    </button>
+                                    <button type="submit" class="btn btn-inverse btn-lg" id="btn-cash">
+                                        <i class="far fa-money-bill-alt"></i> Book on Hold
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $('#Email').change(function () {
+            var email = $(this).val();
+            if (email) {
+                $.ajax({
+                    data: JSON.stringify({"email": email}),
+                    contentType: "application/json; charset=utf-8",
+                    url: '/Transaction/FetchDetails',
+                    type: "POST",
+                    dataType: "json",
+                    success: function(resp) {
+                        if (resp != null) {
+                            populateForm(resp)
+                        }
+                    }
+                })
+            }
+        });
+
+        function populateForm(resp) {
+            $('#PhoneNo').val(resp.phoneNumber);
+            $('#FirstName').val(resp.firstName);
+            $('#LastName').val(resp.lastName);
+            $('#AgeRange').val(resp.ageRange);
+            $('#ReferringCentreID').val(resp.referringCentreID)
+        }
+
+        $('#btn-cash').click(function () {
+            $('#PaymentType').val(0)
+        });
+
+        $('#btn-online').click(function () {
+            $('#PaymentType').val(1)
+        });
+                
+        $('#paymentForm').submit(function(e) {
+            e.preventDefault();
+            InitiateOnlinePayment(getData(), "/Transaction/RaisePayment");
+        });
+
+        function getData() {
+            return JSON.stringify({
+                "email": $('#Email').val(),
+                "phoneNo": $('#PhoneNo').val(),
+                "firstName": $('#FirstName').val(),
+                "lastName": $('#LastName').val(),
+                "paymentType": $('#PaymentType').val(),
+                "noOfSpaces": $('#NoOfSpaces').val(),
+                "ageRange": $('#AgeRange').val(),
+                "activityID": $('#ActivityID').val(),
+                "referringCentreID": $('#ReferringCentreID').val()
+            })
+        }
+    </script>
+}
