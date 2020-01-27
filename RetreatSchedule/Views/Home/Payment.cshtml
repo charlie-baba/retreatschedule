@@ -101,14 +101,14 @@
                         </div>
                         <div class="row">
                             @*<div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Referrer" class="col-form-label f-s-12 text-md-right text-black">
-                                        Name of Referrer <span class="text-danger">*</span>
-                                    </label>
-                                    <input asp-for="Referrer" class="form-control" />
-                                    <span asp-validation-for="Referrer" class="text-danger"></span>
-                                </div>
-                            </div>*@
+                <div class="form-group">
+                    <label asp-for="Referrer" class="col-form-label f-s-12 text-md-right text-black">
+                        Name of Referrer <span class="text-danger">*</span>
+                    </label>
+                    <input asp-for="Referrer" class="form-control" />
+                    <span asp-validation-for="Referrer" class="text-danger"></span>
+                </div>
+            </div>*@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="ReferringCentreID" class="col-form-label f-s-12 text-md-right text-black">
@@ -121,13 +121,17 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-indigo btn-lg" id="btn-online">
-                                        <i class="fas fa-credit-card"></i> Pay Now
-                                    </button>
+                                    @if (!ViewBag.IsIwollo)
+                                    {
+                                        <button type="submit" class="btn btn-indigo btn-lg" id="btn-online">
+                                            <i class="fas fa-credit-card"></i> Pay Now
+                                        </button>
+                                    }
+
                                     <button type="submit" class="btn btn-inverse btn-lg" id="btn-cash">
                                         <i class="far fa-money-bill-alt"></i> Book on Hold
                                     </button>

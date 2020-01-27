@@ -13,5 +13,9 @@ namespace RetreatSchedule.Helper
         string GetCashPaymentSuccessfulMail(Booking booking);
 
         Task SendCashBookingSuccessfulEmailAsync(int bookingId);
+
+        Task SendBookingDeletedEmailAsync(Booking booking);
+
+        Task SendPaymentFailedEmailAsync(int bookingId);
     }
 }

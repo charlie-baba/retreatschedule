@@ -10,12 +10,12 @@ namespace RetreatSchedule.Areas.Identity.Services
 {
     public class EmailSender : IRetreatEmailSender
     {
-        private readonly RetreatDBContext _context;
+        private readonly IdentityDBContext _idContext;
         private readonly EmailConfig _emailConfig;
 
-        public EmailSender(RetreatDBContext context, IOptions<EmailConfig> emailConfig)
+        public EmailSender(IdentityDBContext idContext, IOptions<EmailConfig> emailConfig)
         {
-            _context = context;
+            _idContext = idContext;
             _emailConfig = emailConfig?.Value;
         }
 
@@ -38,7 +38,7 @@ namespace RetreatSchedule.Areas.Identity.Services
                 {
                     if (sendAdmin)
                     {
-                        var emails = _context.Users.Where(x => !string.IsNullOrWhiteSpace(x.AspId)).Select(x => x.Email).ToList();
+                        var emails = _idContext.Users.Select(x => x.Email).ToList();
                         if (emails != null && emails.Count() != 0)
                         {
                             foreach (string adminEmail in emails)

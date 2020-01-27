@@ -32,6 +32,7 @@ namespace RetreatSchedule.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int? page, string locationName, string activityName)
         {
+            ViewData["AcctDetails"] = string.Empty;
             ViewData["LocationName"] = locationName;
             ViewData["ActivityName"] = activityName;
             ViewData["PublicKey"] = _config?.PublicKey;
@@ -92,6 +93,7 @@ namespace RetreatSchedule.Controllers
                 return NotFound();
             }
 
+            ViewData["AcctDetails"] = string.Empty;
             ViewData["MapUrl"] = activity.Location.MapUrl;
             var supportEmail = _context.Settings.FirstOrDefault(x => x.Name == SettingConstants.SupportEmail);
             var supportPhone = _context.Settings.FirstOrDefault(x => x.Name == SettingConstants.SupportPhone);
@@ -109,7 +111,7 @@ namespace RetreatSchedule.Controllers
                 return NotFound();
             }
 
-            var activity = await _context.Activities
+            var activity = await _context.Activities.Include(x => x.Location)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (activity == null || !activity.IsActive)
             {
@@ -119,11 +121,20 @@ namespace RetreatSchedule.Controllers
             ViewData["ReferringCentreID"] = new SelectList(_context.Centres, "Id", "Name");
             ViewData["PublicKey"] = _config?.PublicKey;
             ViewData["ActivityID"] = id;
+            var isIwollo = activity.Location?.Name?.IndexOf("Iwollo", StringComparison.OrdinalIgnoreCase) > -1;
+            ViewData["IsIwollo"] = isIwollo;
+            var accountDetails = string.Empty;
+            if (isIwollo)
+                accountDetails = "<span>Account Name: <b>Wetland Cultural and Education Foundation - Iwollo Booking</b></span> <br/> <span>Account Number: <b>0809077029</b></span>";
+            else
+                accountDetails = "<span>Account Name: <b>Wetland Booking</b></span> <br/> <span>Account Number: <b>0768518344</b></span>";
+            ViewData["AcctDetails"] = accountDetails;
             return View();
         }
 
         public IActionResult Privacy()
         {
+            ViewData["AcctDetails"] = string.Empty;
             return View();
         }
 

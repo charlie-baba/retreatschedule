@@ -36,6 +36,7 @@ namespace RetreatSchedule.Controllers
             var bookingsQuery = _context.Bookings
                 .Include(b => b.Activity)
                 .Include(b => b.User)
+                .Include("User.ReferringCentre")
                 .Where(b => b.Id > 0);
 
             if (ActivityID != null)
@@ -60,6 +61,7 @@ namespace RetreatSchedule.Controllers
             var bookingsQuery = _context.Bookings
                 .Include(b => b.Activity)
                 .Include(b => b.User)
+                .Include("User.ReferringCentre")
                 .Where(b => b.Id > 0);
 
             var page = (pageRequest.DisplayLength == 0) ? 1 : pageRequest.DisplayStart / pageRequest.DisplayLength + 1;
@@ -160,6 +162,10 @@ namespace RetreatSchedule.Controllers
                     {
                         await _emailHelper.SendCashBookingSuccessfulEmailAsync(id);
                     }
+                    else if (booking.PaymentStatus == PaymentStatus.Failed)
+                    {
+                        await _emailHelper.SendPaymentFailedEmailAsync(id);
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -203,14 +209,20 @@ namespace RetreatSchedule.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var booking = await _context.Bookings.FindAsync(id);
+            var booking = await _context.Bookings
+                            .Include(b => b.User)
+                            .Include(b => b.Activity)
+                            .Include("Activity.ActivityType")
+                            .FirstOrDefaultAsync(m => m.Id == id);
             if (booking.PaymentStatus == PaymentStatus.Successful)
             {
                 return NotFound();
             }
 
+            var temp = booking;
             _context.Bookings.Remove(booking);
             await _context.SaveChangesAsync();
+            await _emailHelper.SendBookingDeletedEmailAsync(temp);
             return RedirectToAction(nameof(Index));
         }
 

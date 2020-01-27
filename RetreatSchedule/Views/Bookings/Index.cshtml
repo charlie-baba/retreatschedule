@@ -75,6 +75,15 @@
                             @Html.DisplayNameFor(model => model.TransactionRef)
                         </th>
                         <th>
+                            @Html.DisplayNameFor(model => model.User.AgeRange)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.User.MemberType)
+                        </th>
+                        <th>
+                            Centre
+                        </th>
+                        <th>
                             @Html.DisplayNameFor(model => model.DateCreated)
                         </th>
                         <th>Action</th>
@@ -83,34 +92,44 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.User.FirstName)
-                                @Html.DisplayFor(modelItem => item.User.LastName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PaymentStatus)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Amount)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PaymentType)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Activity.Title)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TransactionRef)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DateCreated)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.FirstName)
+                            @Html.DisplayFor(modelItem => item.User.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PaymentStatus)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PaymentType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Activity.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TransactionRef)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.AgeRange)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.MemberType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.ReferringCentre.Name)
+                        </td>
+                        <td>
+                            <span class="d-none">@item.DateCreated.ToString("yyyyMMdd hhmmss") </span>
+                            @Html.DisplayFor(modelItem => item.DateCreated)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>

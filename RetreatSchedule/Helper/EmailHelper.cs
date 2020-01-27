@@ -32,8 +32,15 @@ namespace RetreatSchedule.Helper
             message = message.Replace("{Title}", booking.Activity?.Title);
             message = message.Replace("{Amount}", string.Format("{0:#,##0}", booking.Amount));
             message = message.Replace("{Bank}", _context.Settings.FirstOrDefault(s => s.Name == BankName)?.Value);
-            message = message.Replace("{AcctName}", _context.Settings.FirstOrDefault(s => s.Name == AccountName)?.Value);
-            message = message.Replace("{AcctNo}", _context.Settings.FirstOrDefault(s => s.Name == AccountNumber)?.Value);
+            if (booking.Activity.Location?.Name?.IndexOf("Iwollo", StringComparison.OrdinalIgnoreCase) > -1)
+            {
+                message = message.Replace("{AcctName}", "Wetland Cultural and Education Foundation - Iwollo Booking");
+                message = message.Replace("{AcctNo}", "0809077029");
+            } else
+            {
+                message = message.Replace("{AcctName}", _context.Settings.FirstOrDefault(s => s.Name == AccountName)?.Value);
+                message = message.Replace("{AcctNo}", _context.Settings.FirstOrDefault(s => s.Name == AccountNumber)?.Value);
+            }
 
             return message;
         }
@@ -63,6 +70,42 @@ namespace RetreatSchedule.Helper
                             .FirstOrDefaultAsync(m => m.Id == bookingId);
                 var message = GetCashPaymentSuccessfulMail(booking);
                 await _emailSender.SendEmailAsync(booking.User?.Email, $"{booking?.Activity?.ActivityType?.Name} Payment Successful", message);
+            }
+            catch (Exception e)
+            { }
+        }
+
+        public async Task SendBookingDeletedEmailAsync(Booking booking)
+        {
+            try
+            {
+                var message = GetFileContent("Booking_Deleted.html");
+                message = message.Replace("{TransRef}", booking.TransactionRef);
+                message = message.Replace("{Date}", booking.DateCreated.ToShortDateString());
+                message = message.Replace("{Time}", booking.DateCreated.ToShortTimeString());
+                message = message.Replace("{Title}", booking.Activity?.Title);
+                await _emailSender.SendEmailAsync(booking.User?.Email, $"Your {booking?.Activity?.ActivityType?.Name} booking was deleted", message);
+            }
+            catch (Exception e)
+            { }
+        }
+
+        public async Task SendPaymentFailedEmailAsync(int bookingId)
+        {
+            try
+            {
+                var booking = await _context.Bookings
+                            .Include(b => b.User)
+                            .Include(b => b.Activity)
+                            .Include("Activity.ActivityType")
+                            .FirstOrDefaultAsync(m => m.Id == bookingId);
+
+                var message = GetFileContent("Payment_Failed.html");
+                message = message.Replace("{TransRef}", booking.TransactionRef);
+                message = message.Replace("{Date}", booking.DateCreated.ToShortDateString());
+                message = message.Replace("{Time}", booking.DateCreated.ToShortTimeString());
+                message = message.Replace("{Title}", booking.Activity?.Title);
+                await _emailSender.SendEmailAsync(booking.User?.Email, $"Your {booking?.Activity?.ActivityType?.Name} payment failed.", message);
             }
             catch (Exception e)
             { }

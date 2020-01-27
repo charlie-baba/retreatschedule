@@ -87,12 +87,12 @@ namespace RetreatSchedule.Controllers
                         values: new { userId = identityUser.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
                     user.AspId = identityUser.Id;
                     _context.Add(user);
                     await _context.SaveChangesAsync();
+
+                    await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
                     return RedirectToAction(nameof(Index));
                 }
                 foreach (var error in result.Errors)

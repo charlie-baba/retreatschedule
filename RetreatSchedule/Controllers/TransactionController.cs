@@ -75,6 +75,7 @@ namespace RetreatSchedule.Controllers
 
                 var activity = _context.Activities
                     .Include(x => x.ActivityType)
+                    .Include(x => x.Location)
                     .SingleOrDefault(a => a.Id == request.ActivityID);
 
                 if (activity == null || !activity.IsActive)
