@@ -10,6 +10,7 @@
     #content {
         margin: 34px 0 10px;
     }
+
     .post-left-info {
         width: 60px !important;
     }
@@ -33,12 +34,12 @@
 </div>
 
 <div id="content" class="content">
-    
+
     <div class="container">
         <div class="row row-space-30">
-            
+
             <div class="col-md-9">
-                
+
                 <ul class="post-list">
 
                     @foreach (var item in Model.Activities)
@@ -56,14 +57,14 @@
                                     <span class="number">@(spacesLeft <= 0 ? "no space available" : $"{spacesLeft} spaces left") </span>
                                 </div>
                             </div>
-                            
+
                             <div class="post-content">
                                 <div class="post-image" style="height: 140px; overflow: hidden;">
                                     <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id">
                                         <div class="post-image-cover" style="background-image: url(@item.PictureUrl)"></div>
                                     </a>
                                 </div>
-                                
+
                                 <div class="post-info">
                                     <h4 class="post-title">
                                         <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id">@item.Title</a>
@@ -81,7 +82,7 @@
                                         @item.Description.Truncate(400)
                                     </div>
                                 </div>
-                                
+
                                 <div class="read-btn-container">
                                     <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="btn btn-green btn-sm">
                                         View Details
@@ -164,7 +165,7 @@
                         <li><a href="http://www.opusdei.ng" target="_blank"><i class="fas fa-globe"></i></a></li>
                         <li><a href="https://twitter.com/OpusdeiNg?ref_src=twsrc%5Etfw" target="_blank"><i class="fab fa-twitter"></i></a></li>
                         @*<li><a href="#"><i class="fab fa-google-plus"></i></a></li>
-                <li><a href="#"><i class="fab fa-instagram"></i></a></li>*@
+                            <li><a href="#"><i class="fab fa-instagram"></i></a></li>*@
                     </ul>
                 </div>
 
@@ -173,4 +174,15 @@
     </div>
 </div>
 
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<partial name="~/Views/Shared/Partials/_WeAreClosed.cshtml" />
+
+@section Scripts{
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+    <script>
+        $("#supportBtn").click(function () {
+            $('#weAreClosedModal').modal('hide');
+            $('#donateModal').modal('show');
+        });
+    </script>
+}

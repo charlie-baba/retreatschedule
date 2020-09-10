@@ -153,8 +153,8 @@ namespace RetreatSchedule.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (request.Amount > 20000)
-                    return Json(new Response { Code = "XX", Description = "You cannot donate above 20,000 naira. Please, enter a lesser amount." });
+                if (request.Amount < 1)
+                    return Json(new Response { Code = "XX", Description = "You need to enter a valid amount." });
 
                 if (string.IsNullOrWhiteSpace(request.Email))
                     request.Email = "bookings@retreatschedule.com";

@@ -12,6 +12,8 @@ using RetreatSchedule.Areas.Identity.Services;
 using RetreatSchedule.Config;
 using RetreatSchedule.Data;
 using RetreatSchedule.Helper;
+using RetreatSchedule.Services;
+using RetreatSchedule.Services.Impl;
 
 namespace RetreatSchedule
 {
@@ -95,6 +97,7 @@ namespace RetreatSchedule
 
             services.AddTransient<IRetreatEmailSender, EmailSender>();
             services.AddTransient<IEmailHelper, EmailHelper>();
+            services.AddTransient<IBookingsService, BookingsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
