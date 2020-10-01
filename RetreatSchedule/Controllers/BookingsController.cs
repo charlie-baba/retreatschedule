@@ -11,6 +11,7 @@ using RetreatSchedule.Models;
 using RetreatSchedule.Models.Enum;
 using RetreatSchedule.Poco;
 using RetreatSchedule.Services;
+using RetreatSchedule.Util;
 
 namespace RetreatSchedule.Controllers
 {
@@ -97,8 +98,12 @@ namespace RetreatSchedule.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UserID,TransactionRef,PaymentStatus,Amount,DateCreated,PaymentType,ActivityID,IsAttended,Id")] Booking booking)
         {
-            if (id != booking.Id)
+            var currentUser = HttpContext.Session.Get<User>(Constants.SessionKeyUser);
+            if (currentUser == null || id != booking.Id)
                 return NotFound();
+
+            if (currentUser.IsViewOnly)
+                return Forbid();
 
             if (ModelState.IsValid)
             {

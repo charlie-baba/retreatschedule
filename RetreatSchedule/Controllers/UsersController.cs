@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using RetreatSchedule.Data;
 using RetreatSchedule.Models;
 using RetreatSchedule.Models.Enum;
+using RetreatSchedule.Util;
 
 namespace RetreatSchedule.Controllers
 {
@@ -71,6 +72,10 @@ namespace RetreatSchedule.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("AspId,FirstName,MiddleName,LastName,Email,PhoneNumber,IsViewOnly,AgeRange,Id")] User user)
         {
+            var currentUser = HttpContext.Session.Get<User>(Constants.SessionKeyUser);
+            if (currentUser.IsViewOnly)
+                return Forbid();
+
             var password = "P@ssword1";
             if (ModelState.IsValid)
             {
@@ -130,10 +135,12 @@ namespace RetreatSchedule.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("AspId,FirstName,MiddleName,LastName,Email,PhoneNumber,AgeRange,IsViewOnly,MemberType,Id")] User user)
         {
-            if (id != user.Id)
-            {
+            var currentUser = HttpContext.Session.Get<User>(Constants.SessionKeyUser);
+            if (currentUser == null || id != user.Id)
                 return NotFound();
-            }
+
+            if (currentUser.IsViewOnly)
+                return Forbid();
 
             if (ModelState.IsValid)
             {

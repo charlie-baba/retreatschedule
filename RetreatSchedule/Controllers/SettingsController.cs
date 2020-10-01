@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RetreatSchedule.Data;
 using RetreatSchedule.Models;
+using RetreatSchedule.Util;
 
 namespace RetreatSchedule.Controllers
 {
@@ -55,6 +56,10 @@ namespace RetreatSchedule.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Value,Id")] Setting setting)
         {
+            var currentUser = HttpContext.Session.Get<User>(Constants.SessionKeyUser);
+            if (currentUser.IsViewOnly)
+                return Forbid();
+
             if (ModelState.IsValid)
             {
                 _context.Add(setting);
@@ -87,11 +92,13 @@ namespace RetreatSchedule.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Name,Value,Id")] Setting setting)
         {
-            if (id != setting.Id)
-            {
+            var currentUser = HttpContext.Session.Get<User>(Constants.SessionKeyUser);
+            if (currentUser == null || id != setting.Id)
                 return NotFound();
-            }
 
+            if (currentUser.IsViewOnly)
+                return Forbid();
+            
             if (ModelState.IsValid)
             {
                 try
