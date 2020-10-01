@@ -1,4 +1,5 @@
-﻿@model IEnumerable<RetreatSchedule.Models.Location>
+﻿@using RetreatSchedule.Util
+@model IEnumerable<RetreatSchedule.Models.Location>
 
 @{
     ViewData["Title"] = "Venues";
@@ -11,6 +12,7 @@
 <!-- ================== END PAGE LEVEL STYLE ================== -->
 
 
+@{ var currentUser = Context.Session.Get<RetreatSchedule.Models.User>(Constants.SessionKeyUser); }
 <div id="content" class="content">
 
     <span class="pull-right">
@@ -43,30 +45,36 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Coordinate)
                         </th>
-                        <th>Action</th>
+                        @if (!(currentUser?.IsViewOnly ?? false))
+                        {
+                            <th>Action</th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContactPhone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Coordinate)
+                        </td>
+                        @if (!(currentUser?.IsViewOnly ?? false))
+                        {
                             <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Address)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ContactPhone)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Coordinate)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id">View</a> |
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                             </td>
-                        </tr>
+                        }
+                    </tr>
                     }
                 </tbody>
             </table>

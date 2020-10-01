@@ -69,7 +69,7 @@ namespace RetreatSchedule.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AspId,FirstName,MiddleName,LastName,Email,PhoneNumber,AgeRange,Id")] User user)
+        public async Task<IActionResult> Create([Bind("AspId,FirstName,MiddleName,LastName,Email,PhoneNumber,IsViewOnly,AgeRange,Id")] User user)
         {
             var password = "P@ssword1";
             if (ModelState.IsValid)
@@ -128,7 +128,7 @@ namespace RetreatSchedule.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AspId,FirstName,MiddleName,LastName,Email,PhoneNumber,AgeRange,MemberType,Id")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("AspId,FirstName,MiddleName,LastName,Email,PhoneNumber,AgeRange,IsViewOnly,MemberType,Id")] User user)
         {
             if (id != user.Id)
             {

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<RetreatSchedule.Models.Activity>
+﻿@using RetreatSchedule.Util
+@model IEnumerable<RetreatSchedule.Models.Activity>
 
 @{
     ViewData["Title"] = "Activities";
@@ -10,13 +11,14 @@
 <!-- ================== END PAGE LEVEL STYLE ================== -->
 
 
+@{ var currentUser = Context.Session.Get<RetreatSchedule.Models.User>(Constants.SessionKeyUser); }
 <div id="content" class="content">
 
     <span class="pull-right">
         <a asp-action="Create" class="btn btn-primary"> <i class="fa fa-plus"></i> Add New Activity</a>
     </span>
     <h1 class="page-header">Activities <small>  </small></h1>
-    
+
     <div class="panel panel-inverse">
         <div class="panel-heading">
             <div class="panel-heading-btn">
@@ -54,42 +56,48 @@
                         <th>
                             @Html.DisplayNameFor(model => model.ActivityType)
                         </th>
-                        <th> Action </th>
+                        @if (!(currentUser?.IsViewOnly ?? false))
+                        {
+                            <th>Action</th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Title)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Capacity)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.StartDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.EndDate)
-                            </td>
-                            <td>
-                                @string.Format("{0:#,##0.##}", item.Amount)
-                            </td>
-                            <td>
-                                @(item.IsActive ? "True" : "False")
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Location.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ActivityType.Name)
-                            </td>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Capacity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td>
+                            @string.Format("{0:#,##0.##}", item.Amount)
+                        </td>
+                        <td>
+                            @(item.IsActive ? "True" : "False")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Location.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ActivityType.Name)
+                        </td>
+                        @if (!(currentUser?.IsViewOnly ?? false))
+                        {
                             <td>
                                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                             </td>
-                        </tr>
+                        }
+                    </tr>
                     }
                 </tbody>
             </table>

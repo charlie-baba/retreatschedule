@@ -39,6 +39,9 @@ namespace RetreatSchedule.Models
         [DisplayName("Super Admin")]
         public bool? IsSuperAdmin { get; set; } = false;
 
+        [DisplayName("View only")]
+        public bool IsViewOnly { get; set; } = false;
+
         [DisplayName("Member Type")]
         public MemberType? MemberType { get; set; }
 
