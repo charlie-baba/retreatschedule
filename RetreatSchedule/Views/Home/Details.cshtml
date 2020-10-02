@@ -1,15 +1,24 @@
 ﻿@model RetreatSchedule.Models.Activity
-@{ 
+@{
     ViewData["Title"] = Model.Title;
+    ViewData["Description"] = Model.StartDate.ToString("MMMM dd") + " - " + Model.EndDate.ToString("MMMM dd") + " | ₦ " + string.Format("{0:#,##0.##}", Model.Amount);
 }
 
 <partial name="../Shared/Partials/_NavBarDefault" />
 <style>
     @@media only screen and (max-width: 480px) {
-        #container {margin-top: 3rem !important;}
+        #container {
+            margin-top: 3rem !important;
+        }
     }
-    .content { margin: 84px 0 10px !important }
-    .section-container { margin-bottom: 20px; }
+
+    .content {
+        margin: 84px 0 10px !important
+    }
+
+    .section-container {
+        margin-bottom: 20px;
+    }
 </style>
 
 <!-- begin #content -->
@@ -69,7 +78,7 @@
                         </div>
                     }
                 </div>
-                
+
                 <div class="section-container">
                     <h4 class="section-title m-b-20"><span>Note</span></h4>
                     <div class="alert alert-warning f-s-12 text-center">

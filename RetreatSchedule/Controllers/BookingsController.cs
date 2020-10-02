@@ -149,6 +149,13 @@ namespace RetreatSchedule.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var currentUser = HttpContext.Session.Get<User>(Constants.SessionKeyUser);
+            if (currentUser == null)
+                return NotFound();
+
+            if (currentUser.IsViewOnly)
+                return Forbid();
+
             var booking = await _bookingsService.FindByIdLoadActivityType(id);
             if (booking.PaymentStatus == PaymentStatus.Successful)
                 return NotFound();

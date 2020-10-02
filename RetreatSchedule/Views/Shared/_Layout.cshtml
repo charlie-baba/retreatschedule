@@ -4,12 +4,13 @@
     <meta charset="utf-8" />
     <title>@ViewData["Title"] | Retreat Registration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @if (ViewData.ContainsKey("Description")){
+    <meta name="description" content="@ViewData["Description"]" />
+    }else {
     <meta name="description" content="Retreat and Workshop registration" />
-
+    }
     <meta property="og:image" itemprop="image" content="https://retreatschedule.com/assets/favicon.png">
     <meta property="og:type" content="website" />
-    <meta property="og:updated_time" content="1440432930" />
-
 
     <link rel="shortcut icon" type="image/png" href="~/assets/favicon.png" />
 
