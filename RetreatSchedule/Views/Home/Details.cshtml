@@ -1,7 +1,7 @@
 ﻿@model RetreatSchedule.Models.Activity
 @{
     ViewData["Title"] = Model.Title;
-    ViewData["Description"] = Model.StartDate.ToString("MMMM dd") + " - " + Model.EndDate.ToString("MMMM dd") + " | ₦ " + string.Format("{0:#,##0.##}", Model.Amount);
+    ViewData["Description"] = Model.StartDate.ToString("MMMM dd") + " - " + Model.EndDate.ToString("MMMM dd") + " | ₦" + string.Format("{0:#,##0.##}", Model.Amount);
 }
 
 <partial name="../Shared/Partials/_NavBarDefault" />
