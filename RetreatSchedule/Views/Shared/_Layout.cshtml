@@ -140,7 +140,7 @@
                                     payWithPaystack(resp.email, resp.amount, resp.ref)
                                 } else if (resp.paymentType == 0) {
                                     var span = document.createElement("span");
-                                    span.innerHTML = "Your space has been reserved. However, you need to make payment and upload proof within 24 hours to avoid losing your space. Transaction ref: <b>" + resp.ref + "</b> <br/> <br/> <span>Bank Name: <b>Access (Diamond) Bank</b></span> <br/> " + acctDetails;
+                                    span.innerHTML = "Your space has been reserved. However, you need to make payment within 24 hours to avoid losing your space. Transaction ref: <b>" + resp.ref + "</b> <br/> <br/> <span>Bank Name: <b>Access (Diamond) Bank</b></span> <br/> " + acctDetails;
                                     swal({
                                     title: "Successful!",
                                         content: span,

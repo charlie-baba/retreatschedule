@@ -1,4 +1,5 @@
 ﻿@model RetreatSchedule.Models.Activity
+@using RetreatSchedule.Models.Enum
 @{
     ViewData["Title"] = Model.Title;
     ViewData["Description"] = Model.StartDate.ToString("MMM dd") + " - " + Model.EndDate.ToString("MMM dd") + " | ₦" + string.Format("{0:#,##0.##}", Model.Amount);
@@ -40,6 +41,7 @@
                     <h4 class="post-title">
                         <a href="javascript:;">@Model.Title</a>
                     </h4>
+                    @{ var spacesLeft = Model.Capacity - Model.Bookings?.Where(x => x.PaymentStatus == PaymentStatus.Successful).Count(); }
                     <div class="post-by">
                         Venue: <strong class="text-black">@Model.Location.Name</strong>
                         <span class="divider">|</span>
@@ -47,7 +49,9 @@
                         <span class="divider">|</span>
                         <strong class="text-black">&#8358; @string.Format("{0:#,##0.##}", Model.Amount)</strong>
                         <span class="divider">|</span>
-                        <strong class="text-black">@Model.Capacity seats</strong>
+                        <strong class="text-black number">
+                            @(spacesLeft <= 1 ? $"{spacesLeft} space" : $"{spacesLeft} spaces") left of @Model.Capacity seats
+                        </strong>
                     </div>
 
                     @if (!Model.IsActive)

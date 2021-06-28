@@ -79,6 +79,9 @@
                             @Html.DisplayNameFor(model => model.User.AgeRange)
                         </th>
                         <th>
+                            @Html.DisplayNameFor(model => model.User.PhoneNumber)
+                        </th>
+                        <th>
                             @Html.DisplayNameFor(model => model.User.MemberType)
                         </th>
                         <th>
@@ -88,7 +91,7 @@
                             @Html.DisplayNameFor(model => model.DateCreated)
                         </th>
                         @if (!(currentUser?.IsViewOnly ?? false))
-                        { 
+                        {
                             <th>Action</th>
                         }
                     </tr>
@@ -118,6 +121,9 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.User.AgeRange)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.PhoneNumber)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.User.MemberType)

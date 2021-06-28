@@ -87,6 +87,7 @@ namespace RetreatSchedule.Controllers
             var activity = await _context.Activities
                 .Include(a => a.ActivityType)
                 .Include(a => a.Location)
+                .Include(a => a.Bookings)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (activity == null)
             {
