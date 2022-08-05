@@ -27,26 +27,6 @@ namespace RetreatSchedule.Controllers
             return View(await retreatDBContext.ToListAsync());
         }
 
-        // GET: Activities/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var activity = await _context.Activities
-                .Include(a => a.ActivityType)
-                .Include(a => a.Location)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (activity == null)
-            {
-                return NotFound();
-            }
-
-            return View(activity);
-        }
-
         // GET: Activities/Create
         public IActionResult Create()
         {
