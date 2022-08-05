@@ -29,6 +29,11 @@ namespace RetreatSchedule.Controllers
             _config = paystackConfig?.Value;
         }
 
+        public async Task<IActionResult> Landing()
+        {
+            return View();
+        }
+
         [HttpGet]
         public async Task<IActionResult> Index(int? page, string locationName, string activityName)
         {
